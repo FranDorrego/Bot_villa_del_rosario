@@ -423,7 +423,7 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
 ## 🧩 Parte 1 – Consultoría sobre plataforma n8n existente
 
 **Duración estimada**: 2 a 3 semanas  
-**Costo estimado**: EUR 500
+**Costo estimado**: EUR 700
 
 ### Objetivos
 - Ayudar al equipo actual a:
@@ -447,7 +447,7 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
 ## 🐍 Parte 2 – Desarrollo completo en Python (FastAPI)
 
 **Duración estimada**: 4 a 5 semanas  
-**Costo estimado**: EUR 1.500 
+**Costo estimado**: EUR 1.700 
 
 
 ### 🛠️ Etapas y tiempos estimados
@@ -504,7 +504,7 @@ Testeo funcional, validación con usuarios reales y documentación técnica con 
 ## 🤝 Parte 3 – Trabajo en colaboración con desarrollador actual (API externa)
 
 **Duración estimada**: 3 a 4 semanas  
-**Costo estimado**: EUR 1000 
+**Costo estimado**: EUR 1.300 
 
 ### Objetivos
 - Dividir responsabilidades para acelerar el desarrollo:
