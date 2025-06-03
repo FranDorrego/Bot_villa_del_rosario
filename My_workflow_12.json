@@ -1,0 +1,1060 @@
+{
+  "name": "My workflow 12",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1840,
+        480
+      ],
+      "id": "6f7f2b44-7019-426e-8c79-29e12845ab4f",
+      "name": "Telegram Trigger",
+      "webhookId": "437b53a6-20a1-4163-9dcb-6cc566f2dcf3",
+      "credentials": {
+        "telegramApi": {
+          "id": "8p8w4rBj4oSVhnIF",
+          "name": "Municipalidad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Merge').item.json.session_id }}",
+        "contextWindowLength": 2
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -140,
+        480
+      ],
+      "id": "06357e03-c515-42d3-9b42-2d0ffbfbf9bf",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "385178981347949",
+        "recipientPhoneNumber": "={{ $('Set WhatsApp').item.json.session_id }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -40
+      ],
+      "id": "93fb335e-1a5d-4382-90fc-86950796d14a",
+      "name": "WhatsApp Business Cloud1",
+      "webhookId": "eedc94d1-8183-4d1a-978e-c88e5dad6eb7",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "BXMeKgc29CQOj1Xl",
+          "name": "WhatsApp GA webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Merge').item.json.platform }}",
+                    "rightValue": "whatsapp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "61f5c76a-28c6-41e5-858a-85807fbf8b9d"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "whatsapp"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7a8be113-5d7a-4457-9dbf-1685bfd08d66",
+                    "leftValue": "={{ $('Merge').item.json.platform }}",
+                    "rightValue": "telegram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "telegram"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        320,
+        120
+      ],
+      "id": "d2919034-7612-4b3c-9fe9-51a2490a2811",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        460
+      ],
+      "id": "526d9791-dcde-437e-9b61-18b88044645a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "1QzwCT82evRuA8bq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0297abe7-ad69-416a-a39b-f6405c7e8482",
+              "name": "text",
+              "value": "={{ $json.messages[0].text.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1160,
+        -220
+      ],
+      "id": "90897b12-1d66-41f5-98a2-e4bcfe2e451a",
+      "name": "WhatsApp Text"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc684cff-3c24-44cd-8bb1-5e598ce647b6",
+              "name": "platform",
+              "value": "whatsapp",
+              "type": "string"
+            },
+            {
+              "id": "730886a9-7a98-49d6-8441-a8ba2e727665",
+              "name": "session_id",
+              "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+              "type": "string"
+            },
+            {
+              "id": "12dd19b4-e778-402c-b2c2-d30e5078a698",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -660,
+        140
+      ],
+      "id": "20e731db-b01f-4d94-8a48-6e4f612f2f59",
+      "name": "Set WhatsApp"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -940,
+        200
+      ],
+      "id": "7602d3f1-31ae-42a5-baa1-e49e31c0ac61",
+      "name": "OpenAI_TranscribirAudio",
+      "credentials": {
+        "openAiApi": {
+          "id": "1QzwCT82evRuA8bq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAGroHhcFncBOw4RZAsydZChkkVCM5lFlAQZBEZApPol5IGKg4mJaWuZBmOSLKNeqH7lPWSZAq9y7owPtzE2GhTnu5DE4PZCZAZCylyYCAaCUfIZA4wuAlSKdnJoHQoQfFpDR7z8NQg3aSYJzu8efnfvBRkEhEsjXvZCG7A1SQqGQeBoyfZBj7K0o9ZA3Bog0OFjF8zoXBAydxA4y3p7lyL17kvhAuf0Go0Q5uaLMgbJte4yQZB9P9hcMD6VwZD"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1180,
+        60
+      ],
+      "id": "f77f3978-5fca-4cb8-973f-7ed0b7dfcfd4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].audio.id }}"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -1400,
+        220
+      ],
+      "id": "5560da0e-1660-4b70-ab58-4e3310574bc0",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "9b40ad0c-274b-4af2-b6de-8b1cde2b2c2f",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "BXMeKgc29CQOj1Xl",
+          "name": "WhatsApp GA webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5c1ef0ba-09ab-42ce-8976-aa9f8bf1a0de"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3354c2ce-adf7-46b4-b8c1-12cca907e6e8",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "da16e37f-1f77-4d22-ba95-5b248a71e060",
+                    "leftValue": "error",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1640,
+        140
+      ],
+      "id": "33b0c045-3a33-4446-a900-65f1f14cfc1e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1860,
+        120
+      ],
+      "id": "bd570c0c-5229-47ca-b368-bd13fa77d509",
+      "name": "WhatsApp Trigger",
+      "webhookId": "53d8c493-0120-4ae0-a4ba-601dc8eae993",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "0nXUdzPW1Jrns4AD",
+          "name": "WhatsApp GA"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        100
+      ],
+      "id": "7d520ce8-cbb4-422a-bb6a-f0d6dcea0705",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# ASISTENTE VIRTUAL MUNICIPAL - VILLA DEL ROSARIO\n\nEres el asistente virtual de la Municipalidad de Villa del Rosario. Sigues estos pasos exactos:\n\n## PASO 1: CONSULTA INICIAL\n**SIEMPRE PREGUNTA PRIMERO:** \"¡Hola! ¿En qué puedo ayudarte hoy? ¿Necesitas información sobre trámites o queres hacer un reclamo?\"\n\n## PASO 2: SI ELIGE RECLAMO\n**PEDIR DNI:** \"Para hacer un reclamo necesito validar tu identidad. Por favor ingresa tu DNI sin puntos ni espacios.\"\n\n## ⚠️ CRÍTICO - NO INVENTES NÚMEROS\n**JAMÁS uses números inventados como 1, 2, 3, etc.**\n**SOLO usa los números EXACTOS que te devuelven las herramientas**\n\n### PASO A PASO - SIN INVENTAR NADA:\n\n**PASO 3 - Después de ValidarDNI:**\n- Ejemplo: JSON devuelve `{\"id\": 1, \"domicilio\": \"Hipolito Irigoyen 980\"}`\n- Guardas: ASOCIADO_ID = 1 (exactamente ese número)\n- Guardas: DOMICILIO = \"Hipolito Irigoyen 980\" (exactamente ese texto)\n\n**PASO 4 - Después de ObtenerServiciosPorIdAsociado:**\n- Ejemplo: JSON devuelve `[{\"id_servicio\": 25, \"id_empresa\": 3, \"nombre\": \"Agua\"}]`\n- Cuando usuario elige \"Agua\", guardas: SERVICIO_ID = 25 y EMPRESA_ID = 3\n- **NO uses 1, 2, 3... usa los números REALES del JSON**\n\n**PASO 5 - Después de MotivosReclamosPorIdServicio:**\n- Ejemplo: JSON devuelve `[{\"id\": 47, \"descripcion\": \"Falta de presión\"}]`\n- Cuando usuario elige ese motivo, guardas: MOTIVO_ID = 47\n- **NO uses 1... usa el número REAL del JSON**\n\n### SI RESPONDE NO:\n- Volver al PASO 1 (preguntarle qué quiere)\n\n### SI RESPONDE SÍ:\n- Avanzar al PASO 4\n\n## PASO 4: MOSTRAR SERVICIOS\n1. **Usar herramienta:** `ObtenerServiciosPorIdAsociado` enviando tu ASOCIADO_ID\n2. **Mostrar lista:** de servicios disponibles\n3. **PREGUNTAR:** \"¿Para cuál de estos servicios necesitas hacer el reclamo?\"\n\n## PASO 5: MOSTRAR MOTIVOS\n1. **Del servicio que eligió el usuario, ANOTAR:**\n   - El número `id_servicio` → este es tu SERVICIO_ID\n   - El número `id_empresa` → este es tu EMPRESA_ID\n2. **Usar herramienta:** `MotivosReclamosPorIdServicio` enviando tu SERVICIO_ID\n3. **Mostrar opciones:** de motivos disponibles\n4. **PREGUNTAR:** \"¿Cuál es el motivo de tu reclamo?\"\n\n## PASO 6: OFRECER AYUDA\n1. **Del motivo que eligió, ANOTAR:** el número `id` → este es tu MOTIVO_ID\n2. **PREGUNTAR:** \"¿Querés que te ayude con este problema o preferís hacer el reclamo formal de todas formas?\"\n\n## PASO 7: SI QUIERE HACER EL RECLAMO\n1. **PEDIR DESCRIPCIÓN:** \"Describí tu problema con detalle\"\n2. **Usar herramienta:** `RealizarReclamo` con estos parámetros EXACTOS:\n   - `IdAsociado`: tu ASOCIADO_ID (el número del campo \"idAsociado\")\n   - `IdServicio`: tu SERVICIO_ID (el número, no la palabra)\n   - `IdConsultaMotivo`: tu MOTIVO_ID (el número, no la palabra) \n   - `Descripcion`: lo que escribió el usuario\n   - `Domicilio`: tu USUARIO_DOMICILIO (el texto, no la palabra)\n   - `IdEmpresa`: tu EMPRESA_ID (el número, no la palabra)\n   - `IdEstado`: 1\n   - `IdCanal`: 1\n   - `ImagenUrl`: null\n\n3. **CONFIRMAR:** \"¡Listo! Tu reclamo se registró correctamente. Tu número de gestión es: [id del JSON]. Guardá este número para hacer seguimiento.\"\n\n## EJEMPLO REAL COMPLETO - NO INVENTES NADA:\n\n**ValidarDNI devuelve:**\n```json\n{\"id\": 1, \"domicilio\": \"Hipolito Irigoyen 980\", \"nombre\": \"Emmanuel\"}\n```\n→ ASOCIADO_ID = 1, DOMICILIO = \"Hipolito Irigoyen 980\"\n\n**ObtenerServiciosPorIdAsociado devuelve:**\n```json\n[{\"id_servicio\": 25, \"id_empresa\": 3, \"nombre\": \"Agua potable\"}]\n```\n→ Usuario elige \"Agua potable\" → SERVICIO_ID = 25, EMPRESA_ID = 3\n\n**MotivosReclamosPorIdServicio devuelve:**\n```json\n[{\"id\": 47, \"descripcion\": \"Sin presión de agua\"}]\n```\n→ Usuario elige ese motivo → MOTIVO_ID = 47\n\n**RealizarReclamo envías:**\n```json\n{\n  \"IdAsociado\": 1,\n  \"IdServicio\": 25, \n  \"IdConsultaMotivo\": 47,\n  \"IdEmpresa\": 3,\n  \"Domicilio\": \"Hipolito Irigoyen 980\",\n  \"Descripcion\": \"lo que escribió el usuario\",\n  \"IdEstado\": 1,\n  \"IdCanal\": 1,\n  \"ImagenUrl\": null\n}\n```\n\n**🚫 NUNCA ENVÍES:** 1, 1, 1, 1... números inventados\n**✅ SIEMPRE ENVÍA:** Los números exactos de cada JSON\n\n## OTROS TEMAS\nSi no es reclamo, dar información general sobre trámites municipales."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -100,
+        120
+      ],
+      "id": "41bc256e-e322-43e0-ba91-87f209eea180",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "5c1ef0ba-09ab-42ce-8976-aa9f8bf1a0de"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3354c2ce-adf7-46b4-b8c1-12cca907e6e8",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "da16e37f-1f77-4d22-ba95-5b248a71e060",
+                    "leftValue": "error",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "error"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1620,
+        500
+      ],
+      "id": "599500ee-d3be-4cc4-8b0e-1d8ac8daddaa",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8aefa02e-2f06-402a-aed4-9c82fe59c8e7",
+              "name": "message.text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1220,
+        540
+      ],
+      "id": "4965d8a7-56f1-47b4-ae1e-8cb391694ee9",
+      "name": "Telegram Texto"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        720
+      ],
+      "id": "b1558482-314a-447b-9874-1637bbab4f28",
+      "name": "Telegram",
+      "webhookId": "4061b681-c3e1-4e69-bf62-5a82d17f34a4",
+      "credentials": {
+        "telegramApi": {
+          "id": "8p8w4rBj4oSVhnIF",
+          "name": "Municipalidad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -940,
+        700
+      ],
+      "id": "44dee831-a943-4024-966d-f47be0b9f5bb",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "1QzwCT82evRuA8bq",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "473ea779-910f-4be6-a517-bf4df9744b01",
+              "name": "platform",
+              "value": "telegram",
+              "type": "string"
+            },
+            {
+              "id": "4f60f12a-4355-4309-b314-e4998fed08fe",
+              "name": "session_id",
+              "value": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "363acc3d-ca63-4208-a6fd-68dd4bdec9be",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -720,
+        480
+      ],
+      "id": "251c5a9f-ef95-41d9-941e-5ca626a3ef1c",
+      "name": "Set Telegram"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Merge').item.json.session_id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        200
+      ],
+      "id": "5b88c831-d6e8-4266-b624-7c36b21a7155",
+      "name": "Telegram1",
+      "webhookId": "21ed302f-52bd-40f5-ad81-1eae475a13f2",
+      "credentials": {
+        "telegramApi": {
+          "id": "8p8w4rBj4oSVhnIF",
+          "name": "Municipalidad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Herramienta para guardar el reclamo solicitado por el usuario",
+        "method": "POST",
+        "url": "https://api-bot-goodapps.vercel.app/api/crear-reclamo",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "IdEmpresa",
+              "value": "1"
+            },
+            {
+              "name": "IdAsociado",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Es el id obtenido en la respuesta de la herramienta ValidarDNI`, 'string') }}"
+            },
+            {
+              "name": "IdServicio",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Es el idServicio obtenido en la respuesta de la herramienta ValidarDNI`, 'string') }}"
+            },
+            {
+              "name": "IdConsultaMotivo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Es el id motivo del reclamo seleccionado por el usuario (motivo_id )`, 'string') }}"
+            },
+            {
+              "name": "Domicilio",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Es el domicilio obtenido en la respuesta de la herramienta ValidarDNI`, 'string') }}"
+            },
+            {
+              "name": "IdEstado",
+              "value": "1"
+            },
+            {
+              "name": "IdCanal",
+              "value": "1"
+            },
+            {
+              "name": "ImagenUrl",
+              "value": "https://ejemplo.com/imagen-reclamo.jpg"
+            },
+            {
+              "name": "Descripcion",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters8_Value', `Descripcion del reclamo, enviar lo mas posible para tener la informacion bien detallada. (descripcion_detallada)`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        480
+      ],
+      "id": "f8a74e43-89b6-462b-9998-0ff7f001a96f",
+      "name": "RealizarReclamo"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Herramienta para guardar el reclamo solicitado por el usuario",
+        "method": "POST",
+        "url": "https://api-bot-goodapps.vercel.app/api/validar-identidad",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idEmpresa",
+              "value": "1"
+            },
+            {
+              "name": "identificador",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        460
+      ],
+      "id": "70ae118e-6b74-4573-b929-e2202f1e01e7",
+      "name": "ValidarDNI"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Luego de que el usuario elige el servicio, ofrecerle la lista de motivos de reclamos que puede hacer",
+        "method": "POST",
+        "url": "https://api-bot-goodapps.vercel.app/api/listar-consultas-motivos",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "IdEmpresa",
+              "value": "1"
+            },
+            {
+              "name": "IdServicio",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `IdServicio seleccionado por el usuario`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        460
+      ],
+      "id": "79aa37fd-33b0-4a0d-9f1e-cfbc5acb8972",
+      "name": "MotivosReclamosPorIdServicio"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Herramienta para obtener los servicios asociados del usuario validado",
+        "method": "POST",
+        "url": "https://api-bot-goodapps.vercel.app/api/listar-servicios",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idEmpresa",
+              "value": "1"
+            },
+            {
+              "name": "idAsociado",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Es el id obtenido en la respuesta de la herramienta ValidarDNI`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        460
+      ],
+      "id": "71557946-dd68-4672-8d11-0b3ca087ca13",
+      "name": "ObtenerServiciosPorIdAsociado"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Text": {
+      "main": [
+        [
+          {
+            "node": "Set WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_TranscribirAudio": {
+      "main": [
+        [
+          {
+            "node": "Set WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_TranscribirAudio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Telegram Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Texto": {
+      "main": [
+        [
+          {
+            "node": "Set Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Set Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Telegram": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RealizarReclamo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ValidarDNI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MotivosReclamosPorIdServicio": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObtenerServiciosPorIdAsociado": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "41ecb67c-1ed4-4536-8f95-a3569df7b232",
+  "meta": {
+    "instanceId": "74cd28a51f94386aacf6a874fd27022972256c2a04541b730e3086ec2bcb88e2"
+  },
+  "id": "dXageW4IXkgCjMog",
+  "tags": []
+}
