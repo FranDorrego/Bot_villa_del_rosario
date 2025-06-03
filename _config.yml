@@ -3,7 +3,7 @@ description: "Documentación funcional y técnica del asistente de WhatsApp para
 author: Franco Dorrego – ArduMaker
 email: francodorrego@gmail.com
 
-theme: just-the-docs
+theme: jekyll-theme-midnight
 
 markdown: kramdown
 kramdown:
