@@ -1,3 +1,39 @@
+title: "Bot Municipalidad – Villa del Rosario"
+description: "Documentación funcional y técnica del asistente de WhatsApp para Villa del Rosario."
+author: Franco Dorrego – ArduMaker
+email: francodorrego@gmail.com
+
 theme: minima
-title: Bot Municipalidad
-description: Documentación funcional y técnica del bot.
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+
+minima:
+  skin: dark  # 🌙 Tema oscuro
+  social_links:
+    github: FranDorrego
+    email: francodorrego@gmail.com
+    linkedin: franco-dorrego
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Página de inicio
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"

@@ -1,4 +1,3 @@
-# Bot de WhatsApp para Municipalidad
 
 ## 🤖 Requisitos Funcionales
 
