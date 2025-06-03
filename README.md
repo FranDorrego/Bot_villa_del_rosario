@@ -432,13 +432,25 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
   - Resolver errores actuales de flujos
   - Automatizar seguimiento de reclamos
 
-### Tareas
-| Tarea | Tiempo estimado | Descripción |
-|-------|------------------|--------------|
-| Diagnóstico del flujo actual | 1 día | Entender configuración actual y nudos de error |
-| Asistencia en lógica de flujos | 2-3 días | Recomendar ajustes y simplificar estructura |
-| Implementación de estados | 2-3 días | Diseño y prueba de lectura/escritura de estado por teléfono |
-| Scripts adicionales (Python/JS en n8n) | 1-2 días | Automatizaciones y transformación de datos |
+### 🧩 Tareas
+
+**1. Diagnóstico del flujo actual**  
+🕒 *1 día*  
+Entender configuración actual y detectar nudos de error en los workflows.
+
+**2. Asistencia en lógica de flujos**  
+🕒 *2–3 días*  
+Recomendar mejoras, simplificar pasos y organizar la estructura de automatización.
+
+
+**3. Implementación de estados**  
+🕒 *2–3 días*  
+Diseñar y probar un sistema de lectura/escritura de estado por teléfono (sesión persistente).
+
+**4. Scripts adicionales (Python/JS en n8n)**  
+🕒 *1–2 días*  
+Crear automatizaciones específicas y lógica personalizada con código dentro del entorno n8n.
+
 
 > 🧠 *Ideal para mejorar lo que ya tienen sin migrar de tecnología.*
 
