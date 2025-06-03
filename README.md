@@ -1,4 +1,6 @@
 
+# Bot Municipalidad – Villa del Rosario
+
 ## 🤖 Requisitos Funcionales
 
 Este documento resume las funcionalidades requeridas para el desarrollo de un bot de WhatsApp destinado a ciudadanos de la municipalidad. Se agrupan los requerimientos por temática para facilitar su implementación por etapas.
