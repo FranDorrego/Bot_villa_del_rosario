@@ -98,7 +98,7 @@ Este documento resume las funcionalidades requeridas para el desarrollo de un bo
 
 Este documento describe paso a paso la arquitectura y lógica de un bot municipal por WhatsApp, desarrollado 100% en Python, con FastAPI y Twilio.
 
----
+
 
 ## 🔄 Flujo General del Bot
 
@@ -132,7 +132,6 @@ Ejemplo:
 
 Cada paso se guarda con el estado actualizado.
 
----
 
 ### 4. 🧐 Si NO hay estado → detectar intención
 
@@ -147,7 +146,6 @@ if "carnet" in mensaje and "auto" in mensaje:
     intencion = "tramite_carnet"
 ```
 
----
 
 ### 5. 💡 Se llama al handler correspondiente
 
@@ -160,7 +158,6 @@ def handle_info_basura():
 
 Si el handler necesita recolectar más datos, cambia el estado del usuario para continuar.
 
----
 
 ### 6. 📃 Si la intención es de consulta informativa
 
@@ -168,14 +165,12 @@ Si el handler necesita recolectar más datos, cambia el estado del usuario para 
 - O usa templates predefinidos cargados desde base local
 - Puede usar GPT para armar mejor la redacción (opcional)
 
----
 
 ### 7. 📝 Se responde al usuario por WhatsApp
 
 - Se guarda el estado de conversación si el flujo no terminó
 - Si se completó (ej: se hizo reclamo, se dio info), se borra el estado del usuario
 
----
 
 ## 📥 Organización de datos para respuestas informativas
 
@@ -206,7 +201,7 @@ MunicipalidadBot/
 > Usuario: "¿Cuándo es el próximo evento de cultura?"
 > ✉️ El bot busca en `/cultura/eventos_actuales.pdf`, extrae el texto y responde con el próximo evento listado.
 
----
+
 
 ## 🤝 Tecnologías sugeridas
 
@@ -218,16 +213,16 @@ MunicipalidadBot/
 | Persistencia                | SQLite, Redis o JSON local |
 | Archivos de información     | Google Drive compartido    |
 
----
+
 
 Este flujo está pensado para mantener control total del bot, facilitar su mantenimiento, y permitir escalarlo con nuevos temas sin romper lo existente.
 
+---
 
 # 🤖 (Opcion 2) Implementación del Bot Municipal en n8n
 
 Este documento explica cómo replicar el flujo del bot de WhatsApp para una municipalidad usando **n8n**, adaptado a sus capacidades.
 
----
 
 ## 🧠 Consideraciones Generales
 
@@ -236,7 +231,6 @@ n8n es ideal para flujos simples y tareas automatizadas, pero tiene limitaciones
 - Procesar respuestas abiertas
 - Lógica condicional compleja
 
----
 
 ## 🏗️ Estructura del Flujo en n8n
 
@@ -258,7 +252,7 @@ n8n es ideal para flujos simples y tareas automatizadas, pero tiene limitaciones
 - Si no hay:
   - Seguir al paso de clasificación de intención
 
----
+
 
 ### 🧠 4. Clasificación de intención
 - Nodo `OpenAI` (si tenés API Key) o `IF` con reglas tipo:
@@ -268,7 +262,6 @@ IF message contains "carnet" AND "auto"
 ```
 - Otra opción: usar `Function` node con JavaScript para categorizar
 
----
 
 ### ⚙️ 5. Ejecutar subflujo por intención
 - Cada tema (basura, salud, cursos, reclamos) se maneja en un subworkflow
@@ -277,7 +270,7 @@ IF message contains "carnet" AND "auto"
   - Enviar mensajes con texto fijo
   - Solicitar más datos al usuario
 
----
+
 
 ## 📃 Manejo de consultas informativas (Google Drive)
 
@@ -291,7 +284,6 @@ IF message contains "carnet" AND "auto"
 3. Nodo: `Google Docs` → extraer texto
 4. Nodo: `Respond with WhatsApp message`
 
----
 
 ## 🗂️ Estado del usuario
 
@@ -306,13 +298,13 @@ Ejemplo de estructura:
 | +549351...    | reclamo_gas    | esperando_direccion  | {"barrio": "Sur"}   |
 ```
 
----
+
 
 ## 📤 Enviar respuesta a WhatsApp
 - Nodo `HTTP Request` a Twilio API
 - O si usás WhatsApp Cloud API, también HTTP POST con plantilla o texto
 
----
+
 
 ## ✅ Consejos para n8n
 
@@ -321,7 +313,7 @@ Ejemplo de estructura:
 - Guardá estados externos, n8n no es bueno para flujos largos sin persistencia
 - Nombrá los nodos y conectores para no perderte
 
----
+
 
 ## 🚫 Limites de n8n
 
@@ -331,7 +323,7 @@ Ejemplo de estructura:
 | Procesamiento de lenguaje complejo | Usar GPT desde backend, no desde n8n directo |
 | Múltiples flujos simultáneos | Implementar identificadores por usuario y estados |
 
----
+
 
 Este enfoque te permite usar n8n para prototipos o casos simples, pero si querés robustez real, eventualmente migrá la lógica crítica a un backend en Python.
 
@@ -425,7 +417,6 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
 - Desarrollo completo desde cero con backend en Python
 - Trabajo colaborativo con backend API compartido y manejo de lógica desde IA
 
----
 
 ## 🧩 Parte 1 – Consultoría sobre plataforma n8n existente
 
