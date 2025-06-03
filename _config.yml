@@ -3,7 +3,7 @@ description: "Documentación funcional y técnica del asistente de WhatsApp para
 author: Franco Dorrego – ArduMaker
 email: francodorrego@gmail.com
 
-theme: jekyll-theme-midnight
+theme: minima
 
 markdown: kramdown
 kramdown:
@@ -14,13 +14,18 @@ kramdown:
     block:
       line_numbers: true
 
-just_the_docs:
-  color_scheme: dark
+minima:
+  skin: dark  # 🌙 Tema oscuro
+  social_links:
+    github: FranDorrego
+    email: francodorrego@gmail.com
+    linkedin: https://www.linkedin.com/in/francodorrego/
 
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+# Página de inicio
 defaults:
   - scope:
       path: ""
