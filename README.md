@@ -449,18 +449,53 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
 **Duración estimada**: 4 a 5 semanas  
 **Costo estimado**: EUR 1.500 
 
-### Etapas y tiempos estimados
 
-| Módulo | Tiempo | Descripción |
-|--------|--------|--------------|
-| Setup de servidor (VPS, entorno) | 1-2 días | Configuración de hosting, dominio, SSL, despliegue inicial |
-| Recepción Webhook desde Twilio | 1-2 día | Endpoint funcional para recibir mensajes |
-| Manejo de usuarios y sesiones | 3-4 días | Seguimiento de conversaciones y estados por usuario |
-| Clasificación de mensajes (lógica/IA) | 3 días | Detectar intención y redirigir al handler adecuado |
-| Implementación de flujos (basura, reclamos, salud, etc.) | 10-12 días | Crear flujos individuales y modularizados |
-| Conexión a Google Drive (info actualizable) | 2-3 días | Lectura dinámica de archivos PDF, Sheets |
-| Sistema de logging y backup | 1-2 días | Registro de interacciones para seguimiento |
-| Pruebas + documentación | 3-4 días | Validación, test con usuarios, instructivo técnico |
+### 🛠️ Etapas y tiempos estimados
+
+**🌐 Setup de servidor (VPS, entorno)**  
+🕒 *1–2 días*  
+Configuración de hosting, dominio, SSL y despliegue inicial del sistema.
+
+
+
+**🔁 Recepción Webhook desde Twilio**  
+🕒 *1–2 días*  
+Implementación del endpoint para recibir mensajes desde WhatsApp.
+
+
+
+**👥 Manejo de usuarios y sesiones**  
+🕒 *3–4 días*  
+Seguimiento de conversaciones por número, con estado persistente entre interacciones.
+
+
+
+**🧠 Clasificación de mensajes (lógica/IA)**  
+🕒 *3 días*  
+Identificación de intenciones mediante lógica o GPT para redireccionar al flujo correcto.
+
+
+
+**🧩 Implementación de flujos (basura, reclamos, salud, etc.)**  
+🕒 *10–12 días*  
+Desarrollo modular de flujos conversacionales por categoría temática.
+
+
+
+**📂 Conexión a Google Drive (info actualizable)**  
+🕒 *2–3 días*  
+Lectura de documentos dinámicos (PDF, Sheets) desde carpetas organizadas.
+
+
+**📝 Sistema de logging y backup**  
+🕒 *1–2 días*  
+Registro de interacciones, errores y eventos para trazabilidad y análisis.
+
+
+**🧪 Pruebas + documentación**  
+🕒 *3–4 días*  
+Testeo funcional, validación con usuarios reales y documentación técnica con instructivos.
+
 
 > 🧱 *Permite una solución escalable, confiable y mantenible a largo plazo.*
 
@@ -482,15 +517,36 @@ Presento el plan de trabajo y estimación de tiempos y tareas para acompañar el
 - Lista centralizada con todos los endpoints necesarios
 - Especificación de qué se espera de cada endpoint (campos, formato, respuestas)
 
-### Responsabilidades propias
-| Tarea | Tiempo estimado | Descripción |
-|-------|------------------|-------------|
-| Estructura del backend (FastAPI) | 3-4 días | Configurar API modular para recibir mensajes y responder |
-| Motor de clasificación de intención | 2-3 días | Con o sin GPT, identifica qué desea el usuario |
-| Flujos personalizados por intención | 6-7 días | Manejo de preguntas, respuestas, estado por usuario |
-| API REST para respuestas | 2 días | Endpoint `GET /respuesta/{user_id}` para integración |
-| Persistencia y contexto | 2 días | Base de datos para retener sesiones y flujos activos |
-| Pruebas + documentación API | 2 días | Swagger + ejemplos de uso de cada endpoint |
+### ✅ Responsabilidades propias
+
+**🧱 Estructura del backend (FastAPI)**  
+🕒 *3–4 días*  
+Configurar una API modular para recibir mensajes y responder según la lógica definida.
+
+
+**🧠 Motor de clasificación de intención**  
+🕒 *2–3 días*  
+Detectar automáticamente lo que el usuario necesita, con reglas personalizadas o GPT.
+
+
+**📚 Flujos personalizados por intención**  
+🕒 *6–7 días*  
+Diseñar respuestas, preguntas y manejo de contexto según el tipo de consulta (reclamos, info, trámites, etc.).
+
+**🔌 API REST para respuestas**  
+🕒 *2 días*  
+Crear endpoint como `GET /respuesta/{user_id}` para integrarlo fácilmente con el frontend o sistema de WhatsApp.
+
+
+**🗂️ Persistencia y contexto**  
+🕒 *2 días*  
+Guardar el historial y estado de cada conversación en base de datos.
+
+
+**🧪 Pruebas + documentación API**  
+🕒 *2 días*  
+Generar documentación con Swagger y pruebas para cada endpoint.
+
 
 > 🎯 *Permite combinar lo mejor de dos mundos: WhatsApp controlado por un programador, IA y flujos por otro.*
 
